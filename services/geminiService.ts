@@ -2,6 +2,9 @@ import { GoogleGenAI, LiveServerMessage, Modality, Type, FunctionDeclaration } f
 import { createPcmBlob, base64ToBytes, decodeAudioData } from './audioUtils';
 import { AddStopArgs, RemoveStopArgs } from '../types';
 
+// Declaração para evitar erro TS2580 no ambiente de navegador/build
+declare const process: { env: { API_KEY: string } };
+
 // Define Tools for the model
 const addDeliveryStopTool: FunctionDeclaration = {
   name: 'addDeliveryStop',
@@ -172,7 +175,7 @@ export class GeminiLiveService {
 
   private async handleMessage(message: LiveServerMessage, sessionPromise: Promise<any>) {
     // 1. Handle Tool Calls
-    if (message.toolCall) {
+    if (message.toolCall?.functionCalls) {
       for (const fc of message.toolCall.functionCalls) {
         let result: any = { result: "ok" };
         
