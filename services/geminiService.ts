@@ -147,8 +147,8 @@ export class GeminiLiveService {
     this.scriptProcessor = this.inputAudioContext.createScriptProcessor(4096, 1, 1);
     
     this.scriptProcessor.onaudioprocess = (e) => {
-      if (!this.isConnected) return;
-
+      // Guidelines: Solely rely on sessionPromise resolves and then call `session.sendRealtimeInput`, **do not** add other condition checks.
+      
       const inputData = e.inputBuffer.getChannelData(0);
       
       // Simple volume meter logic
